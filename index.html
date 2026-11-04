@@ -58,6 +58,9 @@
 
     <div class="nav-group">
       <div class="nav-title">Hardware & Docs</div>
+      <a href="#firmware" class="nav-item">
+        <span>📥</span> ESP32 Firmware (.ino)
+      </a>
       <a href="#system" class="nav-item">
         <span>⚙</span> Hardware Diagnostics
       </a>
@@ -109,16 +112,20 @@
       </div>
 
       <div class="header-controls">
-        <div class="badge-mode badge-simulation" id="connectionStatus">
-          <span class="status-dot"></span> CONNECTING...
+        <div class="badge-mode badge-offline" id="connectionStatus">
+          <span class="status-dot"></span> ESP32 STANDBY
         </div>
+
+        <button class="btn-success" id="openFirmwareModalBtn" title="Download or View ESP32 Arduino Code (.ino)">
+          📥 ESP32 Code (.ino)
+        </button>
 
         <button class="btn-secondary" id="configEndpointBtn" title="Set ESP32 IP address or relative path">
           ⚙ Configure IP
         </button>
 
-        <button class="btn-secondary" id="toggleSimBtn" title="Switch between hardware and simulation">
-          Switch to Simulation
+        <button class="btn-secondary" id="toggleSimBtn" title="Optional: Run interactive client-side simulation">
+          ▶️ Run Simulation (Optional)
         </button>
 
         <a href="https://github.com/Ankitsatnami/Smart_Environment_Monitor" target="_blank" class="btn-primary" title="View Source Code on GitHub">
@@ -128,9 +135,10 @@
       </div>
     </header>
 
-    <!-- SIMULATION / BENCH TEST TOOLBAR -->
+    <!-- SIMULATION / BENCH TEST TOOLBAR (OPTIONAL) -->
     <div class="sim-toolbar">
-      <span>Interactive Bench Tests:</span>
+      <span class="sim-state-chip off" id="simToolbarState">● SIMULATION: OFF (HARDWARE LINK)</span>
+      <button class="btn-warning" id="masterSimToggleBtn">▶️ Activate Simulation Bench</button>
       <button class="btn-chip" onclick="simToggleRain()">🌧️ Toggle Rain Event</button>
       <button class="btn-chip" onclick="simSetDrySoil()">🌵 Trigger Arid Soil (18%)</button>
       <button class="btn-chip" onclick="simSetWetSoil()">💧 Trigger Saturated Soil (85%)</button>
@@ -383,6 +391,105 @@
       </div>
     </section>
 
+    <!-- ESP32 FIRMWARE & CODE DOWNLOAD SECTION -->
+    <section class="section" id="firmware">
+      <div class="section-heading">
+        <div>
+          <h2>ESP32 DevKit V1 Firmware &amp; Source Code</h2>
+          <small>OFFICIAL C++ ARDUINO SKETCH · DIRECT DOWNLOAD &amp; PINOUT CONFIGURATION</small>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button class="btn-success" id="downloadInoFileBtn">
+            📥 Download Smart_Environment_Monitor.ino
+          </button>
+          <button class="btn-secondary" id="copyCodeSectionBtn">
+            📋 Copy C++ Code
+          </button>
+        </div>
+      </div>
+
+      <div class="two-columns">
+        <!-- HARDWARE WIRING CARD -->
+        <div class="panel">
+          <h3>⚡ Hardware Pinout Specifications</h3>
+          <p class="panel-sub">Star-ground topology, 12-bit oversampling ADC1 channel allocation</p>
+          <table class="pinout-table">
+            <thead>
+              <tr>
+                <th>Transducer / Sensor</th>
+                <th>ESP32 Pin</th>
+                <th>Signal Type</th>
+                <th>Working Range</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>DHT11 Microclimate</strong></td>
+                <td><code>GPIO 4</code></td>
+                <td>1-Wire Digital</td>
+                <td>Temp: 0–50°C | RH: 20–90%</td>
+              </tr>
+              <tr>
+                <td><strong>Soil Moisture Probe</strong></td>
+                <td><code>GPIO 34</code></td>
+                <td>Analog (ADC1_CH6)</td>
+                <td>0–4095 (Dry 3000, Wet 1300)</td>
+              </tr>
+              <tr>
+                <td><strong>Pluviometer Rain Plate</strong></td>
+                <td><code>GPIO 35</code></td>
+                <td>Analog (ADC1_CH7)</td>
+                <td>Rain threshold &lt; 2500</td>
+              </tr>
+              <tr>
+                <td><strong>Active Alarm Buzzer</strong></td>
+                <td><code>GPIO 26</code></td>
+                <td>Digital Out</td>
+                <td>HIGH on Rain / LOW Standby</td>
+              </tr>
+              <tr>
+                <td><strong>Common Ground &amp; Rail</strong></td>
+                <td><code>GND / 3V3 / VIN</code></td>
+                <td>Power Buses</td>
+                <td>Regulated 3.3V / 5.0V Star Ground</td>
+              </tr>
+            </tbody>
+          </table>
+          <p style="font-size:12px;color:var(--text-muted);margin-top:12px;line-height:1.6;">
+            💡 <em>Note: Pin 34 and 35 belong to ADC1 on the ESP32, ensuring zero interference with the internal Wi-Fi radio subsystem (ADC2 pins must be avoided when Wi-Fi is active).</em>
+          </p>
+        </div>
+
+        <!-- QUICK FLASH INSTRUCTIONS CARD -->
+        <div class="panel">
+          <h3>🚀 Quick Flashing &amp; Deployment Guide</h3>
+          <p class="panel-sub">Step-by-step instructions for Arduino IDE and PlatformIO</p>
+          <div style="font-size:12.5px;color:var(--text-muted);line-height:1.8;">
+            <p><strong>1. Install Required Libraries:</strong> Open Arduino IDE Library Manager and install <code>DHT sensor library</code> by Adafruit and <code>Adafruit Unified Sensor</code>.</p>
+            <p style="margin-top:8px;"><strong>2. Set Wi-Fi Credentials:</strong> In the sketch configuration header (lines 39-40), set your SSID and password:</p>
+            <code style="display:block;background:#080d1a;padding:8px 12px;border-radius:6px;margin:8px 0;font-family:var(--font-mono);font-size:11px;color:var(--blue);">
+              const char* WIFI_SSID = "Your_SSID";<br>
+              const char* WIFI_PASSWORD = "Your_Password";
+            </code>
+            <p><strong>3. Flash ESP32:</strong> Connect ESP32 DevKit V1 via USB, select <strong>ESP32 Dev Module</strong>, and click <strong>Upload</strong> (115200 baud).</p>
+            <p style="margin-top:8px;"><strong>4. Connect to Dashboard:</strong> Check Arduino Serial Monitor for the assigned IP address (e.g. <code>http://192.168.1.150</code>) and enter it via the <strong>Configure IP</strong> button.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- EMBEDDED C++ CODE VIEWER -->
+      <div class="code-container">
+        <div class="code-header-bar">
+          <span>⚡ Smart_Environment_Monitor.ino (Production C++ Sketch)</span>
+          <div style="display:flex;gap:8px;">
+            <button class="btn-chip" id="copyEmbedCodeBtn">📋 Copy Full Code</button>
+            <button class="btn-chip" id="downloadEmbedCodeBtn">📥 Download .ino</button>
+          </div>
+        </div>
+        <pre class="code-scroll-box" id="embeddedCodeBox"><code>/* Loading ESP32 Source Code... */</code></pre>
+      </div>
+    </section>
+
     <!-- FOOTER -->
     <footer class="footer">
       <p>
@@ -412,6 +519,35 @@
     <div class="modal-footer">
       <button class="btn-secondary" id="closeEndpointBtn">Cancel</button>
       <button class="btn-primary" id="saveEndpointBtn">Save & Connect</button>
+    </div>
+  </div>
+</div>
+
+<!-- ESP32 FIRMWARE MODAL -->
+<div class="modal-backdrop" id="firmwareModal">
+  <div class="modal-box modal-box-wide">
+    <div class="modal-header-row">
+      <div class="modal-title" style="margin-bottom:0;">📥 ESP32 Firmware Source Code (.ino)</div>
+      <button class="modal-close-icon" id="closeFirmwareModalBtn">&times;</button>
+    </div>
+    <div class="modal-body" style="margin-bottom:12px;">
+      <p style="margin-bottom:8px;font-size:12px;color:var(--text-muted);">
+        Complete, production-tested ESP32 DevKit V1 firmware with 10-sample ADC oversampling, non-blocking asynchronous timing loop, RESTful CORS JSON API, and embedded web server.
+      </p>
+      <div class="code-container" style="margin-top:0;">
+        <div class="code-header-bar">
+          <span>📄 Smart_Environment_Monitor.ino</span>
+          <div style="display:flex;gap:8px;">
+            <button class="btn-chip" id="modalCopyCodeBtn">📋 Copy to Clipboard</button>
+            <button class="btn-chip" id="modalDownloadInoBtn">📥 Download .ino</button>
+          </div>
+        </div>
+        <pre class="code-scroll-box" id="modalCodeBox" style="max-height:360px;"><code>/* Loading code... */</code></pre>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" id="closeFirmwareModalBtn2">Close</button>
+      <button class="btn-success" id="modalDownloadBottomBtn">📥 Download Smart_Environment_Monitor.ino</button>
     </div>
   </div>
 </div>
