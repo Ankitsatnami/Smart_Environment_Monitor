@@ -1,0 +1,234 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 280" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b1324" stop-opacity="0.95"/>
+      <stop offset="50%" stop-color="#0e1a32" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#070d18" stop-opacity="0.98"/>
+    </linearGradient>
+
+    <!-- Glowing Node Gradients -->
+    <linearGradient id="cyanBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#2563eb"/>
+    </linearGradient>
+
+    <linearGradient id="emeraldGreen" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4ade80"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+
+    <linearGradient id="amberOrange" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fb923c"/>
+      <stop offset="100%" stop-color="#dc2626"/>
+    </linearGradient>
+
+    <linearGradient id="purpleViolet" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#c084fc"/>
+      <stop offset="100%" stop-color="#7c3aed"/>
+    </linearGradient>
+
+    <!-- Filters for Bloom Glow -->
+    <filter id="glowCyan" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="4" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+
+    <filter id="glowGreen" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3.5" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+
+    <filter id="glowAmber" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3.5" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <style>
+    .grid-line { stroke: #1e293b; stroke-width: 1; stroke-dasharray: 4,4; opacity: 0.6; }
+    .circuit-bus { stroke: #334155; stroke-width: 1.5; fill: none; }
+    .active-bus-cyan { stroke: #38bdf8; stroke-width: 2; fill: none; stroke-dasharray: 8, 12; animation: signalFlow 2.5s linear infinite; }
+    .active-bus-green { stroke: #4ade80; stroke-width: 2; fill: none; stroke-dasharray: 8, 12; animation: signalFlowRev 2.8s linear infinite; }
+    .active-bus-amber { stroke: #fb923c; stroke-width: 2; fill: none; stroke-dasharray: 6, 10; animation: signalFlow 2.2s linear infinite; }
+
+    @keyframes signalFlow {
+      from { stroke-dashoffset: 40; }
+      to { stroke-dashoffset: 0; }
+    }
+
+    @keyframes signalFlowRev {
+      from { stroke-dashoffset: 0; }
+      to { stroke-dashoffset: 40; }
+    }
+
+    @keyframes pulseRing {
+      0% { r: 36px; opacity: 0.8; stroke-width: 2; }
+      50% { r: 52px; opacity: 0.2; stroke-width: 1; }
+      100% { r: 64px; opacity: 0; stroke-width: 0.5; }
+    }
+
+    @keyframes pulseCore {
+      0%, 100% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.6)); }
+      50% { transform: scale(1.04); filter: drop-shadow(0 0 18px rgba(74, 222, 128, 0.8)); }
+    }
+
+    @keyframes radarSweep {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes rainFall {
+      0% { transform: translateY(-8px); opacity: 0; }
+      40% { opacity: 0.9; }
+      100% { transform: translateY(18px); opacity: 0; }
+    }
+
+    @keyframes floatGentle {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-5px); }
+    }
+
+    @keyframes blinkLED {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.2; }
+    }
+
+    .pulse-ring-1 { animation: pulseRing 3s ease-out infinite; transform-origin: 450px 140px; }
+    .pulse-ring-2 { animation: pulseRing 3s ease-out infinite 1.5s; transform-origin: 450px 140px; }
+    .core-node { transform-origin: 450px 140px; animation: pulseCore 3.5s ease-in-out infinite; }
+    .radar-rotator { transform-origin: 450px 140px; animation: radarSweep 8s linear infinite; }
+    .cloud-float { animation: floatGentle 4s ease-in-out infinite; }
+    .rain-drop-1 { animation: rainFall 1.2s ease-in infinite; }
+    .rain-drop-2 { animation: rainFall 1.2s ease-in infinite 0.4s; }
+    .rain-drop-3 { animation: rainFall 1.2s ease-in infinite 0.8s; }
+    .led-fast { animation: blinkLED 0.8s steps(1) infinite; }
+    .led-slow { animation: blinkLED 1.6s steps(1) infinite 0.5s; }
+
+    .node-title { font-family: 'Inter', -apple-system, sans-serif; font-size: 11px; font-weight: 700; fill: #f8fafc; letter-spacing: 0.5px; }
+    .node-sub { font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 500; fill: #94a3b8; }
+    .tag-text { font-family: 'JetBrains Mono', monospace; font-size: 8px; font-weight: 600; fill: #38bdf8; text-anchor: middle; }
+  </style>
+
+  <!-- Base Plate Frame -->
+  <rect x="5" y="5" width="890" height="270" rx="16" fill="url(#bgGrad)" stroke="#1e293b" stroke-width="1.5"/>
+
+  <!-- Background Telemetry Grid Lines -->
+  <line x1="120" y1="10" x2="120" y2="270" class="grid-line" />
+  <line x1="280" y1="10" x2="280" y2="270" class="grid-line" />
+  <line x1="450" y1="10" x2="450" y2="270" class="grid-line" />
+  <line x1="620" y1="10" x2="620" y2="270" class="grid-line" />
+  <line x1="780" y1="10" x2="780" y2="270" class="grid-line" />
+  <line x1="10" y1="70" x2="890" y2="70" class="grid-line" />
+  <line x1="10" y1="140" x2="890" y2="140" class="grid-line" />
+  <line x1="10" y1="210" x2="890" y2="210" class="grid-line" />
+
+  <!-- Circuit Routing Buses to Center -->
+  <!-- Left Bus: DHT11 -->
+  <path d="M165 80 L320 80 L380 125 L415 125" class="circuit-bus" />
+  <path d="M165 80 L320 80 L380 125 L415 125" class="active-bus-amber" />
+
+  <!-- Left Bus: Rain Sensor AO -->
+  <path d="M165 200 L320 200 L380 155 L415 155" class="circuit-bus" />
+  <path d="M165 200 L320 200 L380 155 L415 155" class="active-bus-cyan" />
+
+  <!-- Right Bus: Soil Sensor AO -->
+  <path d="M735 80 L580 80 L520 125 L485 125" class="circuit-bus" />
+  <path d="M735 80 L580 80 L520 125 L485 125" class="active-bus-green" />
+
+  <!-- Right Bus: Buzzer Alert Out & Cloud Sync -->
+  <path d="M735 200 L580 200 L520 155 L485 155" class="circuit-bus" />
+  <path d="M735 200 L580 200 L520 155 L485 155" class="active-bus-cyan" />
+
+  <!-- CENTER CORE: ESP32 IoT Engine -->
+  <g id="center-hub">
+    <!-- Pulsing Radar Wave Rings -->
+    <circle cx="450" cy="140" r="40" fill="none" stroke="#38bdf8" class="pulse-ring-1" />
+    <circle cx="450" cy="140" r="40" fill="none" stroke="#4ade80" class="pulse-ring-2" />
+
+    <!-- Radar Sweep Beam -->
+    <g class="radar-rotator">
+      <line x1="450" y1="140" x2="495" y2="95" stroke="#38bdf8" stroke-width="2" opacity="0.8" />
+      <polygon points="450,140 495,95 480,80" fill="rgba(56,189,248,0.15)" />
+    </g>
+
+    <!-- Main Microcontroller Body -->
+    <g class="core-node">
+      <rect x="412" y="102" width="76" height="76" rx="14" fill="#0f172a" stroke="#38bdf8" stroke-width="2" filter="url(#glowCyan)"/>
+      <rect x="419" y="109" width="62" height="62" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1.2"/>
+
+      <!-- Stylized Microchip Traces -->
+      <circle cx="450" cy="140" r="14" fill="url(#cyanBlue)" />
+      <text x="450" y="143" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="800" fill="#ffffff" text-anchor="middle">ESP32</text>
+    </g>
+
+    <!-- Status Indicator LEDs -->
+    <circle cx="423" cy="113" r="2.5" fill="#4ade80" class="led-fast" filter="url(#glowGreen)"/>
+    <circle cx="431" cy="113" r="2.5" fill="#38bdf8" class="led-slow" filter="url(#glowCyan)"/>
+    <circle cx="477" cy="113" r="2.5" fill="#fb923c" class="led-fast" filter="url(#glowAmber)"/>
+
+    <text x="450" y="196" class="node-title" text-anchor="middle">XTENSA LX6 MCU</text>
+    <text x="450" y="210" class="node-sub" text-anchor="middle">FreeRTOS · REST Port 80</text>
+  </g>
+
+  <!-- NODE 1 (TOP LEFT): DHT11 THERMAL & HUMIDITY -->
+  <g transform="translate(70, 40)">
+    <rect x="0" y="0" width="145" height="76" rx="12" fill="#0f172a" stroke="#fb923c" stroke-width="1.4" filter="url(#glowAmber)" fill-opacity="0.95"/>
+    <circle cx="32" cy="38" r="18" fill="url(#amberOrange)" />
+    <!-- Thermometer / Droplet Icon -->
+    <text x="32" y="44" font-size="16" text-anchor="middle">🌡️</text>
+
+    <text x="58" y="32" class="node-title">DHT11 SENSOR</text>
+    <text x="58" y="46" class="node-sub">GPIO 4 · 1-Wire Bus</text>
+    <text x="58" y="60" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="700" fill="#ffa868">27.4°C · 62% RH</text>
+  </g>
+
+  <!-- NODE 2 (BOTTOM LEFT): RAIN SENSOR & BUZZER -->
+  <g transform="translate(70, 160)">
+    <rect x="0" y="0" width="145" height="76" rx="12" fill="#0f172a" stroke="#38bdf8" stroke-width="1.4" filter="url(#glowCyan)" fill-opacity="0.95"/>
+    <circle cx="32" cy="38" r="18" fill="url(#cyanBlue)" />
+
+    <!-- Animated Cloud & Rain Drops -->
+    <g class="cloud-float">
+      <text x="32" y="38" font-size="14" text-anchor="middle">🌧️</text>
+    </g>
+    <circle cx="28" cy="48" r="1.5" fill="#38bdf8" class="rain-drop-1" />
+    <circle cx="33" cy="46" r="1.5" fill="#38bdf8" class="rain-drop-2" />
+    <circle cx="37" cy="49" r="1.5" fill="#38bdf8" class="rain-drop-3" />
+
+    <text x="58" y="32" class="node-title">RAIN PLUVIOMETER</text>
+    <text x="58" y="46" class="node-sub">GPIO 35 · ADC1_CH7</text>
+    <text x="58" y="60" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="700" fill="#38bdf8">GPIO 26 ALARM</text>
+  </g>
+
+  <!-- NODE 3 (TOP RIGHT): SOIL HYDROMETRY -->
+  <g transform="translate(685, 40)">
+    <rect x="0" y="0" width="145" height="76" rx="12" fill="#0f172a" stroke="#4ade80" stroke-width="1.4" filter="url(#glowGreen)" fill-opacity="0.95"/>
+    <circle cx="32" cy="38" r="18" fill="url(#emeraldGreen)" />
+    <!-- Sprout / Moisture Icon -->
+    <text x="32" y="44" font-size="16" text-anchor="middle">🌱</text>
+
+    <text x="58" y="32" class="node-title">SOIL MOISTURE</text>
+    <text x="58" y="46" class="node-sub">GPIO 34 · ADC1_CH6</text>
+    <text x="58" y="60" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="700" fill="#4ade80">θ = 64% Optimal</text>
+  </g>
+
+  <!-- NODE 4 (BOTTOM RIGHT): NUMERICAL WEATHER NWP -->
+  <g transform="translate(685, 160)">
+    <rect x="0" y="0" width="145" height="76" rx="12" fill="#0f172a" stroke="#c084fc" stroke-width="1.4" fill-opacity="0.95"/>
+    <circle cx="32" cy="38" r="18" fill="url(#purpleViolet)" />
+    <!-- Satellite / Weather Icon -->
+    <text x="32" y="44" font-size="16" text-anchor="middle">🛰️</text>
+
+    <text x="58" y="32" class="node-title">OPEN-METEO NWP</text>
+    <text x="58" y="46" class="node-sub">ECMWF / GFS Forecast</text>
+    <text x="58" y="60" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="700" fill="#c084fc">48h Synoptic Fusion</text>
+  </g>
+
+  <!-- BOTTOM WATERMARK & SYSTEM SPECS -->
+  <g transform="translate(450, 252)">
+    <text x="0" y="0" font-family="'Inter', sans-serif" font-size="10" font-weight="700" fill="#64748b" text-anchor="middle" letter-spacing="1.2">
+      SMART ENVIRONMENTAL TELEMETRY &amp; ADVISOR PLATFORM · BY ANKIT SATNAMI
+    </text>
+  </g>
+</svg>
