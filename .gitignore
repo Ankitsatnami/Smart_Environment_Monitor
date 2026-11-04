@@ -1,0 +1,22 @@
+# Compiled firmware & binary output
+*.bin
+*.elf
+*.hex
+*.o
+*.a
+*.d
+
+# Arduino IDE / VSCode / PlatformIO
+.pio/
+.vscode/
+build/
+*.pyc
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Environment / Secret configs
+.env
+*.local
