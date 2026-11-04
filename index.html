@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Environmental Monitoring System | IoT Environmental Intelligence</title>
+  <meta name="description" content="Production-grade ESP32 IoT environmental monitoring dashboard with DHT11, capacitive soil moisture, rain sensor, active buzzer, Open-Meteo numerical weather forecasting, and real-time rule-based agronomic advisory engine. Authored by Ankit Satnami.">
+  <meta name="author" content="Ankit Satnami">
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌿</text></svg>">
+
+  <!-- Chart.js Engine -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Application Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- SIDEBAR NAVIGATION -->
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand-icon">🌿</span>
+      <div>SMART<span>ENV</span></div>
+    </div>
+    <div class="brand-sub">ENVIRONMENTAL INTELLIGENCE</div>
+
+    <a href="https://github.com/Ankitsatnami" target="_blank" class="author-pill" title="Lead Developer Profile">
+      <span>👨‍💻</span> By <strong>Ankit Satnami</strong>
+    </a>
+
+    <div class="nav-group">
+      <div class="nav-title">Main Telemetry</div>
+      <a href="#overview" class="nav-item active">
+        <span>◈</span> Overview
+      </a>
+      <a href="#sensors" class="nav-item">
+        <span>◉</span> Sensor Monitoring
+      </a>
+      <a href="#weather" class="nav-item">
+        <span>☀</span> Live Weather & Forecast
+      </a>
+      <a href="#analytics" class="nav-item">
+        <span>▥</span> Analytics & Telemetry
+      </a>
+      <a href="#advisor" class="nav-item">
+        <span>✧</span> Smart Advisor Engine
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-title">Hardware & Docs</div>
+      <a href="#system" class="nav-item">
+        <span>⚙</span> Hardware Diagnostics
+      </a>
+      <a href="https://github.com/Ankitsatnami/Smart_Environment_Monitor" target="_blank" class="nav-item">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        GitHub Repository
+      </a>
+    </div>
+
+    <div class="sidebar-footer">
+      <div>ESP32 DevKit V1 Architecture</div>
+      <div style="margin-top:4px;">Licensed under <a href="https://github.com/Ankitsatnami/Smart_Environment_Monitor/blob/main/LICENSE" target="_blank">MIT</a></div>
+    </div>
+  </aside>
+
+  <!-- MAIN VIEWPORT -->
+  <main class="main">
+
+    <!-- TOP ANIMATED SYSTEM TOPOLOGY HERO SVG (VERY TOP) -->
+    <div class="hero-svg-panel">
+      <img src="assets/environmental_telemetry_hero.svg" alt="Autonomous Agro-Climatic Intelligence Platform Architecture and Telemetry Signal Flow" class="hero-svg-img">
+    </div>
+
+    <!-- HERO BANNER & PROFESSIONAL SYSTEM HEADER -->
+    <header class="header" id="overview">
+      <div class="header-content-wrapper">
+        <div class="header-badge-row">
+          <span class="system-chip">🌿 AUTONOMOUS SENSING SUITE</span>
+          <span class="system-chip">⚡ 12-BIT OVERSAMPLED ADC</span>
+          <span class="system-chip">🛰️ SYNOPTIC NWP FUSION</span>
+        </div>
+
+        <div class="header-title-box">
+          <h1 class="main-title">
+            Autonomous Agro-Climatic Intelligence &amp; Environmental Telemetry Platform
+          </h1>
+          <p class="main-subtitle">
+            Continuous in-situ microclimate sensing, subsurface hydrometry, pluviometric acoustics, and predictive meteorological model synthesis.
+          </p>
+        </div>
+
+        <div class="header-meta-bar">
+          <span class="meta-item"><strong>Platform:</strong> ESP32 DevKit V1 (Xtensa LX6)</span>
+          <span class="meta-divider">•</span>
+          <span class="meta-item"><strong>Telemetry Bus:</strong> 1-Wire &amp; ADC1 Multi-Channel</span>
+          <span class="meta-divider">•</span>
+          <span class="meta-item"><strong>Lead Architect:</strong> <a href="https://github.com/Ankitsatnami" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:700;">Ankit Satnami</a></span>
+        </div>
+      </div>
+
+      <div class="header-controls">
+        <div class="badge-mode badge-simulation" id="connectionStatus">
+          <span class="status-dot"></span> CONNECTING...
+        </div>
+
+        <button class="btn-secondary" id="configEndpointBtn" title="Set ESP32 IP address or relative path">
+          ⚙ Configure IP
+        </button>
+
+        <button class="btn-secondary" id="toggleSimBtn" title="Switch between hardware and simulation">
+          Switch to Simulation
+        </button>
+
+        <a href="https://github.com/Ankitsatnami/Smart_Environment_Monitor" target="_blank" class="btn-primary" title="View Source Code on GitHub">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub Repo
+        </a>
+      </div>
+    </header>
+
+    <!-- SIMULATION / BENCH TEST TOOLBAR -->
+    <div class="sim-toolbar">
+      <span>Interactive Bench Tests:</span>
+      <button class="btn-chip" onclick="simToggleRain()">🌧️ Toggle Rain Event</button>
+      <button class="btn-chip" onclick="simSetDrySoil()">🌵 Trigger Arid Soil (18%)</button>
+      <button class="btn-chip" onclick="simSetWetSoil()">💧 Trigger Saturated Soil (85%)</button>
+      <button class="btn-chip" onclick="simSetHeatwave()">🔥 Trigger Heat Stress (39.5°C)</button>
+      <button class="btn-chip" id="exportCsvBtn">📥 Export Telemetry CSV</button>
+      <label style="display:inline-flex;align-items:center;gap:6px;margin-left:auto;font-size:12px;color:var(--text-muted);cursor:pointer;">
+        <input type="checkbox" id="audioBuzzerToggle"> Web Audio Buzzer Alarm
+      </label>
+    </div>
+
+    <!-- SENSORS SECTION -->
+    <section class="section" id="sensors">
+      <div class="section-heading">
+        <h2>Physical Environmental Sensors</h2>
+        <small>ESP32 TELEMETRY · 2500ms INTERVAL</small>
+      </div>
+
+      <div class="grid">
+        <!-- TEMPERATURE -->
+        <div class="card">
+          <div class="card-top">
+            <span class="card-label">Ambient Temperature</span>
+            <div class="card-icon">🌡️</div>
+          </div>
+          <div class="card-value accent-orange" id="temp">-- °C</div>
+          <div class="card-description">
+            DHT11 Sensor · GPIO 4
+          </div>
+        </div>
+
+        <!-- HUMIDITY -->
+        <div class="card">
+          <div class="card-top">
+            <span class="card-label">Relative Humidity</span>
+            <div class="card-icon">💧</div>
+          </div>
+          <div class="card-value accent-blue" id="humidity">-- %</div>
+          <div class="card-description">
+            DHT11 Capacitive Polymer
+          </div>
+        </div>
+
+        <!-- SOIL MOISTURE -->
+        <div class="card">
+          <div class="card-top">
+            <span class="card-label">Soil Volumetric Moisture</span>
+            <div class="card-icon">🌱</div>
+          </div>
+          <div class="card-value accent-green" id="soil">-- %</div>
+          <div class="card-description" id="soilStatus">
+            Calibrating probe...
+          </div>
+          <div class="card-progress-bar">
+            <div class="card-progress-fill" id="soilProgressBar" style="width: 0%; background: var(--green);"></div>
+          </div>
+        </div>
+
+        <!-- RAIN SENSOR -->
+        <div class="card">
+          <div class="card-top">
+            <span class="card-label">Precipitation Sensor</span>
+            <div class="card-icon">🌧️</div>
+          </div>
+          <div class="card-value accent-blue" id="rain">--</div>
+          <div class="card-description" id="rainStatus">
+            Conductive serpentine plate
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LIVE WEATHER & FORECAST SECTION -->
+    <section class="section" id="weather">
+      <div class="section-heading">
+        <div>
+          <h2>Numerical Weather & Multi-Day Forecast</h2>
+          <small>OPEN-METEO NUMERICAL WEATHER PREDICTION API</small>
+        </div>
+        <button class="btn-secondary" id="refreshWeatherBtn" type="button">
+          ↻ Refresh Weather Model
+        </button>
+      </div>
+
+      <!-- WEATHER HERO -->
+      <div class="weather-hero">
+        <div class="weather-main">
+          <div>
+            <div class="weather-location" id="weatherLocation">
+              Acquiring satellite coordinate lock...
+            </div>
+            <div class="weather-temp" id="outTemp">--°C</div>
+            <div class="weather-condition" id="weatherCondition">
+              Fetching atmospheric telemetry...
+            </div>
+          </div>
+          <div style="font-size: 72px;" id="weatherIcon">🌤️</div>
+        </div>
+
+        <div class="weather-details">
+          <div class="weather-detail">
+            <small>APPARENT (FEELS LIKE)</small>
+            <div id="feelsLike">--°C</div>
+          </div>
+          <div class="weather-detail">
+            <small>STATION HUMIDITY</small>
+            <div id="outHumidity">--%</div>
+          </div>
+          <div class="weather-detail">
+            <small>10M WIND VELOCITY</small>
+            <div id="windSpeed">-- km/h</div>
+          </div>
+          <div class="weather-detail">
+            <small>PRECIPITATION ACCUMULATION</small>
+            <div id="precipitation">-- mm</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HOURLY FORECAST SLIDER -->
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <h3>24-Hour Micro-Forecast Timeline</h3>
+            <p class="panel-sub">Hourly thermodynamic trajectory and precipitation probability</p>
+          </div>
+        </div>
+        <div class="forecast-row" id="hourlyForecast">
+          <p style="color:var(--text-muted);font-size:13px;">Loading hourly model sequence...</p>
+        </div>
+      </div>
+
+      <!-- WEEKLY 7-DAY FORECAST -->
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <h3>7-Day Synoptic Weather Outlook</h3>
+            <p class="panel-sub">Diurnal temperature extrema and maximum precipitation probability</p>
+          </div>
+        </div>
+        <div class="week-grid" id="weeklyForecast">
+          <p style="color:var(--text-muted);font-size:13px;">Computing weekly forecast matrices...</p>
+        </div>
+      </div>
+
+      <!-- WEATHER FORECAST ANALYTICS CHART -->
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <h3>Forecast Analytical Curves</h3>
+            <p class="panel-sub">Next 24 hours · Thermal gradient vs precipitation probability %</p>
+          </div>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="weatherChart"></canvas>
+        </div>
+      </div>
+
+      <p id="weatherUpdated" style="color:var(--text-dim);font-size:11px;margin-top:10px;">
+        Weather telemetry initialized.
+      </p>
+    </section>
+
+    <!-- SENSOR ANALYTICS SECTION -->
+    <section class="section" id="analytics">
+      <div class="section-heading">
+        <h2>Real-Time Dynamic Telemetry</h2>
+        <small>CONTINUOUS HIGH-FREQUENCY TIME SERIES</small>
+      </div>
+
+      <div class="two-columns">
+        <div class="panel">
+          <h3>DHT11 Thermal & Atmospheric Dynamics</h3>
+          <p class="panel-sub">Ambient Temperature (°C) & Relative Humidity (%)</p>
+          <div class="chart-wrap">
+            <canvas id="climateChart"></canvas>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3>Subsurface Soil Moisture Dynamics</h3>
+          <p class="panel-sub">Volumetric moisture retention curve (%)</p>
+          <div class="chart-wrap">
+            <canvas id="soilChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SMART ENVIRONMENTAL ADVISOR -->
+    <section class="section" id="advisor">
+      <div class="section-heading">
+        <h2>Smart Environmental Advisor Engine</h2>
+        <small>MULTI-TIERED AGRONOMIC & METEOROLOGICAL FUSION</small>
+      </div>
+
+      <div class="panel">
+        <h3>✧ Real-Time Agronomic & Climate Recommendations</h3>
+        <p class="panel-sub">
+          Synthesized by fusing physical in-situ sensor data with 48-hour forward numerical weather forecast models.
+        </p>
+
+        <div class="suggestion-list" id="suggestions">
+          <div class="suggestion normal">
+            <div class="suggestion-icon">🌱</div>
+            <div>
+              <strong>Initializing Advisor Subsystem</strong><br>
+              Evaluating real-time environmental matrices and soil boundary conditions...
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HARDWARE DIAGNOSTICS & SYSTEM STATUS -->
+    <section class="section" id="system">
+      <div class="section-heading">
+        <h2>Hardware Diagnostics & Device State</h2>
+        <small>MICROCONTROLLER PERIPHERAL REGISTER STATUS</small>
+      </div>
+
+      <div class="panel">
+        <div class="status-row">
+          <span>ESP32 Microcontroller Node</span>
+          <b id="deviceStatus">Connecting...</b>
+        </div>
+        <div class="status-row">
+          <span>DHT11 Digital 1-Wire Bus (GPIO 4)</span>
+          <b id="dhtStatus">WAITING INITIAL READ</b>
+        </div>
+        <div class="status-row">
+          <span>Active Alarm Buzzer Circuit (GPIO 26)</span>
+          <b id="buzzerStatus">STANDBY (GPIO 26 LOW)</b>
+        </div>
+        <div class="status-row">
+          <span>Soil Sensor Raw ADC Count (GPIO 34)</span>
+          <b id="soilRaw">--</b>
+        </div>
+        <div class="status-row">
+          <span>Rain Sensor Raw ADC Count (GPIO 35)</span>
+          <b id="rainRaw">--</b>
+        </div>
+        <div class="status-row">
+          <span>ADC Resolution & Attenuation</span>
+          <b>12-bit (0-4095 counts) · 11dB Attenuation (0 - 3.3V)</b>
+        </div>
+        <div class="status-row">
+          <span>Last Successful Telemetry Refresh</span>
+          <b id="lastUpdate">--</b>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <p>
+        <strong>Smart Environmental Monitoring & IoT Intelligence System</strong>
+      </p>
+      <p style="margin-top:6px;">
+        Designed & Developed by <a href="https://github.com/Ankitsatnami" target="_blank">Ankit Satnami</a> · Open-Source Research Platform
+      </p>
+      <p style="margin-top:6px; font-size:11px;">
+        ESP32 DevKit V1 · DHT11 · Capacitive Soil Hydrometry · Conductive Pluviometry · Open-Meteo ECMWF
+      </p>
+    </footer>
+
+  </main>
+</div>
+
+<!-- CONFIG ENDPOINT MODAL -->
+<div class="modal-backdrop" id="configModal">
+  <div class="modal-box">
+    <div class="modal-title">Configure ESP32 Connection</div>
+    <div class="modal-body">
+      <p>
+        Enter the local IP address or HTTP endpoint of your ESP32 device. When connected to the same Wi-Fi network, enter your ESP32's assigned IP (e.g. <code>http://192.168.1.150/api/data</code>).
+      </p>
+      <input type="text" class="modal-input" id="endpointInput" value="/api/data" placeholder="http://192.168.1.xxx/api/data">
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" id="closeEndpointBtn">Cancel</button>
+      <button class="btn-primary" id="saveEndpointBtn">Save & Connect</button>
+    </div>
+  </div>
+</div>
+
+<!-- Application Script -->
+<script src="js/app.js"></script>
+
+</body>
+</html>
